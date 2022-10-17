@@ -1,15 +1,26 @@
 ﻿using DevelopersApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using DevelopersApi.Adapters;
+using DevelopersApi.Domain;
 
 namespace DevelopersApi.Controllers;
 
 public class DevelopersController : ControllerBase
 {
+    private readonly MongoDevelopersAdapter _mongoAdapter;
+
+    public DevelopersController(MongoDevelopersAdapter mongoAdapter)
+    {
+        _mongoAdapter = mongoAdapter;
+    }
+
+
 
     // GET /on-call-developer
     [HttpGet("/on-call-developer")]
     public ActionResult GetOnCallDeveloper()
     {
+        
         var response = new DeveloperDetailsModel("1", "Jeff", "Gonzalez", "555-1212", "jeff@hypertheory.com");
         
        
@@ -30,9 +41,20 @@ public class DevelopersController : ControllerBase
     }
 
     [HttpPost("/developers")]
-    public ActionResult AddADeveloper([FromBody] DeveloperCreateModel request)
+    public async Task<ActionResult> AddADeveloper([FromBody] DeveloperCreateModel request)
     {
-        var response = new DeveloperDetailsModel(Guid.NewGuid().ToString(), request.FirstName, request.LastName, request.Email, request.Phone);
-        return StatusCode(201, response); // "Good. Ok. I created this.
+        var developerToAdd = new DeveloperEntity
+        {
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email,
+            Phone = request.Phone,
+            IsOnCallDeveloper = true
+        };
+
+        await _mongoAdapter.Developers.InsertOneAsync(developerToAdd);
+
+        
+        return StatusCode(201); // "Good. Ok. I created this.
     }
 }
