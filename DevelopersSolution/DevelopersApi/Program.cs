@@ -12,7 +12,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<MongoDevelopersAdapter>((sp) =>
 {
     // CARDINAL SIN - Hardcoding a connection string
-    return new MongoDevelopersAdapter(builder.Configuration.GetConnectionString("mongo"));
+    var connectionString = builder.Configuration.GetConnectionString("mongo");
+    Console.WriteLine("The connection String" + connectionString);
+    return new MongoDevelopersAdapter(connectionString);
 });
 //builder.Services.AddSingleton<MongoDevelopersAdapter>();
 
