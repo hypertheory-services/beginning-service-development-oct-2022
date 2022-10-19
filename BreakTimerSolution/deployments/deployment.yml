@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: break-timer-api
+spec:
+  selector:
+    matchLabels:
+      app: break-timer-api
+  template:
+    metadata:
+      labels:
+        app: break-timer-api
+    spec:
+      containers:
+      - name: break-timer-api
+        image: break-timer-api:v0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
