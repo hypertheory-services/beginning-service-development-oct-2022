@@ -18,7 +18,7 @@ if (app.Environment.IsDevelopment())
 app.MapGet("/services/developers/outages", () =>
 {
     var thanksGiving = new DateTime(2022, 11, 24);
-    var thanksGivingOutage = new ScheduledOutage(thanksGiving, thanksGiving.AddDays(1), "Party Time");
+    var thanksGivingOutage = new ScheduledOutage(thanksGiving, thanksGiving.AddDays(1), "Party Time Excellent!");
     var response = new { data = new List<ScheduledOutage>() { thanksGivingOutage }};
     return Results.Ok(response);
 });
