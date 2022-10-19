@@ -21,6 +21,10 @@ public class DevelopersController : ControllerBase
     [HttpPut("/on-call-developer")]
     public async Task<ActionResult> AssignOnCallDeveloper([FromBody] DeveloperSummaryModel request)
     {
+        // "Atomic Operation" (All or nothing) 
+        // Done exactly one after the other, in ISOLATION from other calls to this.
+        //   "Serializable"
+        //   "ACID" - Atomic, Consistent, Isolated, Durable
         var objectId = ObjectId.Parse(request.Id);
         var whereIsOnCallFilter = Builders<DeveloperEntity>.Filter.Where(d => d.IsOnCallDeveloper == true);
         var updateToUnsetOnCallDeveloper = Builders<DeveloperEntity>.Update.Set(d => d.IsOnCallDeveloper, false);

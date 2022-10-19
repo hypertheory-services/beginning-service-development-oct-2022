@@ -9,6 +9,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpClient<OutageSupplierHttpAdapter>(httpClient =>
+{
+    httpClient.BaseAddress = new Uri(builder.Configuration.GetConnectionString("outages-api"));
+});
 builder.Services.AddSingleton<MongoDevelopersAdapter>((sp) =>
 {
     // CARDINAL SIN - Hardcoding a connection string
