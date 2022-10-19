@@ -1,5 +1,5 @@
 using DevelopersApi.Adapters;
-
+using DevelopersApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,11 +8,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+// Typed HttpClients
 builder.Services.AddHttpClient<OutageSupplierHttpAdapter>(httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration.GetConnectionString("outages-api"));
-});
+}).AddPolicyHandler(BasicPolicies.GetRetyPolicy()).AddPolicyHandler(BasicPolicies.GetCircuitBreakerPolicy());
+
+
 builder.Services.AddSingleton<MongoDevelopersAdapter>((sp) =>
 {
     // CARDINAL SIN - Hardcoding a connection string
