@@ -25,11 +25,7 @@ public class StatusController : ControllerBase
             // log it, whatever
             outages = null;
         }   
-        //var outages = new List<ScheduledOutage>
-        //{
-        //    new ScheduledOutage(DateTime.Now.AddDays(3), DateTime.Now.AddDays(3).AddHours(1), "Holiday Party"),
-        //    new ScheduledOutage(DateTime.Now.AddDays(4), DateTime.Now.AddDays(5).AddHours(1), "Staff Hanover Recovery"),
-        //};
+
         var response = new StatusResponse("Looks Good, Captain!", DateTime.Now, outages);
         return Ok(response);
     }
