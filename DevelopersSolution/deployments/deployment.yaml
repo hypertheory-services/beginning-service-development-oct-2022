@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: developers-api
+  namespace: developers
 spec:
   selector:
     matchLabels:
@@ -16,7 +17,9 @@ spec:
       - name: developers-api
         env:
           - name: ConnectionStrings__outages-api
-            value: outage-api-service
+            value: "http://outagetracker-api-service"
+          - name: ConnectionStrings__mongo
+            value: "mongodb://root:TokyoJoe138!@mongo-mongodb:27017"
 
         image: developers-api:v0.1
         resources:
